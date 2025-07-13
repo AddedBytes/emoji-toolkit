@@ -10,7 +10,8 @@ final class JoyPixelsTest extends TestCase
 {
 
     private $emojiVersion;
-    private $client;
+
+    private \JoyPixels\Client $client;
 
     protected function setUp(): void
     {
@@ -25,7 +26,10 @@ final class JoyPixelsTest extends TestCase
         $this->emojiVersion = $json->version;
     }
 
-    public static function emojiProvider()
+    /**
+     * @return list<array{mixed, mixed}>
+     */
+    public static function emojiProvider(): array
     {
         $file = __DIR__ . '/../../../emoji.json';
 
@@ -52,10 +56,8 @@ final class JoyPixelsTest extends TestCase
 
     /**
      * test $this->client->toImage()
-     *
-     * @return void
      */
-    public function testToImage()
+    public function testToImage(): void
     {
         $test     = 'Hello world! 😄 :smile:';
         $expected = 'Hello world! <img class="joypixels" alt="&#x1f604;" title=":smile:" src="https://cdn.jsdelivr.net/joypixels/assets/' . $this->emojiVersion . '/png/unicode/32/1f604.png"/> <img class="joypixels" alt="&#x1f604;" title=":smile:" src="https://cdn.jsdelivr.net/joypixels/assets/' . $this->emojiVersion . '/png/unicode/32/1f604.png"/>';
@@ -65,10 +67,8 @@ final class JoyPixelsTest extends TestCase
 
     /**
      * test $this->client->unifyUnicode()
-     *
-     * @return void
      */
-    public function testUnifyUnicode()
+    public function testUnifyUnicode(): void
     {
         $test     = 'Hello world! 😄 :smile:';
         $expected = 'Hello world! 😄 😄';
@@ -78,10 +78,8 @@ final class JoyPixelsTest extends TestCase
 
     /**
      * test $this->client->shortnameToUnicode()
-     *
-     * @return void
      */
-    public function testShortnameToUnicode()
+    public function testShortnameToUnicode(): void
     {
         $test     = 'Hello world! 😄 :smile:';
         $expected = 'Hello world! 😄 😄';
@@ -91,10 +89,8 @@ final class JoyPixelsTest extends TestCase
 
     /**
      * entries can contain some :xxx: words which are not valid shortnames. They must not break anything
-     *
-     * @return void
      */
-    public function testShortnameToUnicodeAcceptWrongShortname()
+    public function testShortnameToUnicodeAcceptWrongShortname(): void
     {
         $test     = 'Hello :world:! 😄 :smile:';
         $expected = 'Hello :world:! 😄 😄';
@@ -104,10 +100,8 @@ final class JoyPixelsTest extends TestCase
 
     /**
      * test $this->client->shortnameToAscii()
-     *
-     * @return void
      */
-    public function testShortnameToAscii()
+    public function testShortnameToAscii(): void
     {
         $test     = 'Hello world! 🙂 :slight_smile:';
         $expected = 'Hello world! 🙂 :]';
@@ -117,10 +111,8 @@ final class JoyPixelsTest extends TestCase
 
     /**
      * test $this->client->shortnameToImage()
-     *
-     * @return void
      */
-    public function testShortnameToImage()
+    public function testShortnameToImage(): void
     {
         $test     = 'Hello world! 😄 :smile:';
         $expected = 'Hello world! 😄 <img class="joypixels" alt="&#x1f604;" title=":smile:" src="https://cdn.jsdelivr.net/joypixels/assets/' . $this->emojiVersion . '/png/unicode/32/1f604.png"/>';
@@ -130,23 +122,20 @@ final class JoyPixelsTest extends TestCase
 
     /**
      * test $this->client->toShort()
-     *
-     * @return void
      */
-    public function testToShort()
+    public function testToShort(): void
     {
         $test     = 'Hello world! 😄 :smile:';
         $expected = 'Hello world! :smile: :smile:';
 
         $this->assertEquals($expected, $this->client->toShort($test));
     }
+
     /**
      *
      * test $this->client->asciiToShortname()
-     *
-     * @return void
      */
-    public function testAsciiToShortname()
+    public function testAsciiToShortname(): void
     {
         $test     = 'Hello world! :) :-D ;) :smile:';
         $expected = 'Hello world! :slight_smile: :smiley: :wink: :smile:';
@@ -159,8 +148,8 @@ final class JoyPixelsTest extends TestCase
      *
      * @dataProvider emojiProvider
      */
-    public function testAsciiToShortnameWithDataProvider($ascii, $shortname)
+    public function testAsciiToShortnameWithDataProvider($ascii, $shortname): void
     {
-        $this->assertEquals($shortname, trim($this->client->asciiToShortname($ascii)));
+        $this->assertEquals($shortname, trim((string) $this->client->asciiToShortname($ascii)));
     }
 }
