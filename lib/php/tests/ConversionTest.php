@@ -10,7 +10,8 @@ final class ConversionTest extends TestCase
 {
 
     private $emojiVersion;
-    private $client;
+
+    private \JoyPixels\Client $client;
 
     protected function setUp(): void
     {
@@ -27,10 +28,8 @@ final class ConversionTest extends TestCase
 
     /**
      * test single unicode character
-     *
-     * @return void
      */
-    public function testSingleUnicodeCharacter()
+    public function testSingleUnicodeCharacter(): void
     {
         $unicode     = '🐌';
         $shortname   = ':snail:';
@@ -48,10 +47,8 @@ final class ConversionTest extends TestCase
 
     /**
      * test three unicode characters together
-     *
-     * @return void
      */
-    public function testThreeUnicodeCharacters()
+    public function testThreeUnicodeCharacters(): void
     {
         $unicode     = '👍🏻👍🏾👍🏿';
         $shortname   = ':thumbsup_tone1::thumbsup_tone4::thumbsup_tone5:';
@@ -64,10 +61,8 @@ final class ConversionTest extends TestCase
 
     /**
      * test the Spanish letter ñ in a shortname
-     *
-     * @return void
      */
-    public function testSpanishLetter_n()
+    public function testSpanishLetter_n(): void
     {
         $unicode     = '🪅';
         $shortname   = ':piñata:';
@@ -81,13 +76,11 @@ final class ConversionTest extends TestCase
 
     /**
      * test shortname mid sentence
-     *
-     * @return void
      */
-    public function testShortnameInsideSentence()
+    public function testShortnameInsideSentence(): void
     {
         $unicode   = 'The 🦄 was EmojiOne\'s official mascot.';
-        $shortname = 'The :unicorn: was EmojiOne\'s official mascot.';
+        $shortname = "The :unicorn: was EmojiOne's official mascot.";
         $image     = 'The <img class="joypixels" alt="&#x1f984;" title=":unicorn:" src="https://cdn.jsdelivr.net/joypixels/assets/' . $this->emojiVersion . '/png/unicode/32/1f984.png"/> was EmojiOne\'s official mascot.';
 
         $this->assertEquals($shortname, $this->client->toShort($unicode));
@@ -99,13 +92,11 @@ final class ConversionTest extends TestCase
 
     /**
      * test shortname mid sentence with a trailing comma
-     *
-     * @return void
      */
-    public function testShortnameInsideSentenceWithComma()
+    public function testShortnameInsideSentenceWithComma(): void
     {
         $unicode   = 'The 🦄, was EmojiOne\'s official mascot.';
-        $shortname = 'The :unicorn:, was EmojiOne\'s official mascot.';
+        $shortname = "The :unicorn:, was EmojiOne's official mascot.";
         $image     = 'The <img class="joypixels" alt="&#x1f984;" title=":unicorn:" src="https://cdn.jsdelivr.net/joypixels/assets/' . $this->emojiVersion . '/png/unicode/32/1f984.png"/>, was EmojiOne\'s official mascot.';
 
         $this->assertEquals($shortname, $this->client->toShort($unicode));
@@ -117,10 +108,8 @@ final class ConversionTest extends TestCase
 
     /**
      * test shortname at start of sentence
-     *
-     * @return void
      */
-    public function testShortnameAtStartOfSentence()
+    public function testShortnameAtStartOfSentence(): void
     {
         $unicode   = '🐌 mail.';
         $shortname = ':snail: mail.';
@@ -135,13 +124,11 @@ final class ConversionTest extends TestCase
 
     /**
      * test shortname at start of sentence with apostrophe
-     *
-     * @return void
      */
-    public function testShortnameAtStartOfSentenceWithApostrophe()
+    public function testShortnameAtStartOfSentenceWithApostrophe(): void
     {
         $unicode   = '🐌\'s are cool!';
-        $shortname = ':snail:\'s are cool!';
+        $shortname = ":snail:'s are cool!";
         $image     = '<img class="joypixels" alt="&#x1f40c;" title=":snail:" src="https://cdn.jsdelivr.net/joypixels/assets/' . $this->emojiVersion . '/png/unicode/32/1f40c.png"/>\'s are cool!';
 
         $this->assertEquals($shortname, $this->client->toShort($unicode));
@@ -153,13 +140,11 @@ final class ConversionTest extends TestCase
 
     /**
      * test shortname at end of sentence
-     *
-     * @return void
      */
-    public function testShortnameAtEndOfSentence()
+    public function testShortnameAtEndOfSentence(): void
     {
         $unicode   = 'EmojiOne\'s official mascot was 🦄.';
-        $shortname = 'EmojiOne\'s official mascot was :unicorn:.';
+        $shortname = "EmojiOne's official mascot was :unicorn:.";
         $image     = 'EmojiOne\'s official mascot was <img class="joypixels" alt="&#x1f984;" title=":unicorn:" src="https://cdn.jsdelivr.net/joypixels/assets/' . $this->emojiVersion . '/png/unicode/32/1f984.png"/>.';
 
         $this->assertEquals($shortname, $this->client->toShort($unicode));
@@ -171,13 +156,11 @@ final class ConversionTest extends TestCase
 
     /**
      * test shortname at end of sentence with alternate punctuation
-     *
-     * @return void
      */
-    public function testShortnameAtEndOfSentenceWithAlternatePunctuation()
+    public function testShortnameAtEndOfSentenceWithAlternatePunctuation(): void
     {
         $unicode   = 'EmojiOne\'s official mascot was 🦄!';
-        $shortname = 'EmojiOne\'s official mascot was :unicorn:!';
+        $shortname = "EmojiOne's official mascot was :unicorn:!";
         $image     = 'EmojiOne\'s official mascot was <img class="joypixels" alt="&#x1f984;" title=":unicorn:" src="https://cdn.jsdelivr.net/joypixels/assets/' . $this->emojiVersion . '/png/unicode/32/1f984.png"/>!';
 
         $this->assertEquals($shortname, $this->client->toShort($unicode));
@@ -189,13 +172,11 @@ final class ConversionTest extends TestCase
 
     /**
      * test shortname at end of sentence with preceeding colon
-     *
-     * @return void
      */
-    public function testShortnameAtEndOfSentenceWithPreceedingColon()
+    public function testShortnameAtEndOfSentenceWithPreceedingColon(): void
     {
         $unicode   = 'EmojiOne\'s official mascot was: 🦄';
-        $shortname = 'EmojiOne\'s official mascot was: :unicorn:';
+        $shortname = "EmojiOne's official mascot was: :unicorn:";
         $image     = 'EmojiOne\'s official mascot was: <img class="joypixels" alt="&#x1f984;" title=":unicorn:" src="https://cdn.jsdelivr.net/joypixels/assets/' . $this->emojiVersion . '/png/unicode/32/1f984.png"/>';
 
         $this->assertEquals($shortname, $this->client->toShort($unicode));
@@ -207,10 +188,8 @@ final class ConversionTest extends TestCase
 
     /**
      * shortname inside of IMG tag
-     *
-     * @return void
      */
-    public function testShortnameInsideOfImgTag()
+    public function testShortnameInsideOfImgTag(): void
     {
         $unicode   = 'The <img class="joypixels" alt="🦄" title=":unicorn:" src="https://cdn.jsdelivr.net/joypixels/assets/' . $this->emojiVersion . '/png/unicode/32/1f984.png" /> was EmojiOne\'s official mascot.';
         $shortname = 'The <img class="joypixels" alt=":unicorn:" title=":unicorn:" src="https://cdn.jsdelivr.net/joypixels/assets/' . $this->emojiVersion . '/png/unicode/32/1f984.png" /> was EmojiOne\'s official mascot.';
@@ -224,13 +203,9 @@ final class ConversionTest extends TestCase
 
     /**
      * test single ascii character
-     *
-     * @return void
      */
-    public function testSingleSmiley()
+    public function testSingleSmiley(): void
     {
-        // enable ASCII conversion
-        $default_ascii = $this->client->ascii;
         $this->client->ascii = true;
 
         $ascii       = ':-)';
@@ -249,13 +224,9 @@ final class ConversionTest extends TestCase
 
     /**
      * test single smiley with incorrect case (shouldn't convert)
-     *
-     * @return void
      */
-    public function testSingleSmileyWithIncorrectCase()
+    public function testSingleSmileyWithIncorrectCase(): void
     {
-        // enable ASCII conversion
-        $default_ascii = $this->client->ascii;
         $this->client->ascii = true;
 
         $ascii = ':d';
@@ -267,13 +238,9 @@ final class ConversionTest extends TestCase
 
     /**
      * test multiple smileys
-     *
-     * @return void
      */
-    public function testMultipleSmilies()
+    public function testMultipleSmilies(): void
     {
-        // enable ASCII conversion
-        $default_ascii = $this->client->ascii;
         $this->client->ascii = true;
 
         // enable ascii match with leading/trailing space char
@@ -296,13 +263,9 @@ final class ConversionTest extends TestCase
 
     /**
      * test smiley to start a sentence
-     *
-     * @return void
      */
-    public function testSmileyAtSentenceStart()
+    public function testSmileyAtSentenceStart(): void
     {
-        // enable ASCII conversion
-        $default_ascii = $this->client->ascii;
         $this->client->ascii = true;
 
         $ascii     = ':\\ is our confused smiley.';
@@ -322,20 +285,16 @@ final class ConversionTest extends TestCase
 
     /**
      * test smiley to end a sentence
-     *
-     * @return void
      */
-    public function testSmileyAtSentenceEnd()
+    public function testSmileyAtSentenceEnd(): void
     {
-        // enable ASCII conversion
-        $default_ascii = $this->client->ascii;
         $this->client->ascii = true;
 
         // enable ascii match with leading/trailing space char
         $this->client->riskyMatchAscii = true;
 
-        $ascii     = 'Our smiley to represent joy is :\')';
-        $ascii_fix = 'Our smiley to represent joy is :\'-)';
+        $ascii     = "Our smiley to represent joy is :')";
+        $ascii_fix = "Our smiley to represent joy is :'-)";
         $unicode   = 'Our smiley to represent joy is 😂';
         $shortname = 'Our smiley to represent joy is :joy:';
         $image     = 'Our smiley to represent joy is <img class="joypixels" alt="&#x1f602;" title=":joy:" src="https://cdn.jsdelivr.net/joypixels/assets/' . $this->emojiVersion . '/png/unicode/32/1f602.png"/>';
@@ -351,19 +310,15 @@ final class ConversionTest extends TestCase
 
     /**
      * test smiley to end a sentence with puncuation
-     *
-     * @return void
      */
-    public function testSmileyAtSentenceEndWithPunctuation()
+    public function testSmileyAtSentenceEndWithPunctuation(): void
     {
-        // enable ASCII conversion
-        $default_ascii = $this->client->ascii;
         $this->client->ascii = true;
 
         // enable ascii match with leading/trailing space char
         $this->client->riskyMatchAscii = true;
 
-        $ascii     = 'The reverse is the joy smiley is the cry smiley :\'(.';
+        $ascii     = "The reverse is the joy smiley is the cry smiley :'(.";
         $ascii_fix = 'The reverse is the joy smiley is the cry smiley ;-(.';
         $unicode   = 'The reverse is the joy smiley is the cry smiley 😢.';
         $shortname = 'The reverse is the joy smiley is the cry smiley :cry:.';
@@ -380,13 +335,9 @@ final class ConversionTest extends TestCase
 
     /**
      * test smiley to end a sentence with preceeding puncuration
-     *
-     * @return void
      */
-    public function testSmileyAtSentenceEndWithPreceedingPunctuation()
+    public function testSmileyAtSentenceEndWithPreceedingPunctuation(): void
     {
-        // enable ASCII conversion
-        $default_ascii = $this->client->ascii;
         $this->client->ascii = true;
 
         // enable ascii match with leading/trailing space char
@@ -409,13 +360,9 @@ final class ConversionTest extends TestCase
 
     /**
      * test smiley inside of an IMG tag  (shouldn't convert anything inside of the tag)
-     *
-     * @return void
      */
-    public function testSmileyInsideAnImgTag()
+    public function testSmileyInsideAnImgTag(): void
     {
-        // enable ASCII conversion
-        $default_ascii = $this->client->ascii;
         $this->client->ascii = true;
 
         $image = 'Smile <img class="joypixels" alt=":)" title=":smile:" src="https://cdn.jsdelivr.net/joypixels/assets/' . $this->emojiVersion . '/png/unicode/32/1f642.png" /> because it\'s going to be a good day.';
@@ -428,13 +375,9 @@ final class ConversionTest extends TestCase
 
     /**
      * test typical username password fail  (shouldn't convert the user:pass, but should convert the last :p)
-     *
-     * @return void
      */
-    public function testTypicalUsernamePasswordFail()
+    public function testTypicalUsernamePasswordFail(): void
     {
-        // enable ASCII conversion
-        $default_ascii = $this->client->ascii;
         $this->client->ascii = true;
 
         // enable ascii match with leading/trailing space char
@@ -457,13 +400,9 @@ final class ConversionTest extends TestCase
 
     /**
      * test shouldn't replace an ascii smiley in a URL (shouldn't replace :/)
-     *
-     * @return void
      */
-    public function testSmileyInAnUrl()
+    public function testSmileyInAnUrl(): void
     {
-        // enable ASCII conversion
-        $default_ascii = $this->client->ascii;
         $this->client->ascii = true;
 
         $ascii = 'Check out https://www.joypixels.com';
