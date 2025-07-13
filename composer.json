@@ -11,12 +11,13 @@
         }
     },
     "require": {
-        "php": ">=5.3"
+        "php": ">=8.4"
     },
     "require-dev": {
         "ext-intl": "*",
         "phpunit/phpunit": "^10.0",
-        "s9e/regexp-builder": "^2.1"
+        "s9e/regexp-builder": "^2.1",
+        "rector/rector": "^2.1"
     },
     "scripts": {
         "update-client": "php lib/php/utils/updateClient.php",
