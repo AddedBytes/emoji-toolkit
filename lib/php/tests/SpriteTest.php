@@ -9,10 +9,9 @@ use JoyPixels\Ruleset;
 final class SpriteTest extends TestCase
 {
 
-    private $emojiVersion;
-    private $client;
+    private \JoyPixels\Client $client;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->client = new Client(new Ruleset());
         $this->client->sprites = true;
@@ -20,18 +19,13 @@ final class SpriteTest extends TestCase
         $file = __DIR__ . '/../../../joypixels.json';
 
         $string = file_get_contents($file);
-
-        $json = json_decode($string);
-
-        $this->emojiVersion = $json->version;
+        json_decode($string);
     }
 
     /**
      * test $this->client->toImage()
-     *
-     * @return void
      */
-    public function testToImage()
+    public function testToImage(): void
     {
         $test     = 'Hello world! 😄 :smile:';
         $expected = 'Hello world! <span class="joypixels joypixels-32-people _1f604" title=":smile:">&#x1f604;</span> <span class="joypixels joypixels-32-people _1f604" title=":smile:">&#x1f604;</span>';
@@ -41,10 +35,8 @@ final class SpriteTest extends TestCase
 
     /**
      * test $this->client->shortnameToImage()
-     *
-     * @return void
      */
-    public function testShortnameToImage()
+    public function testShortnameToImage(): void
     {
         $test     = 'Hello world! 😄 :smile:';
         $expected = 'Hello world! 😄 <span class="joypixels joypixels-32-people _1f604" title=":smile:">&#x1f604;</span>';
