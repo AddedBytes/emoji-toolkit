@@ -12,11 +12,10 @@ use JoyPixels\Ruleset;
 final class EmojiTest extends TestCase
 {
 
-    private $client;
-    private $stop = false;
-    private static $data;
+    private \JoyPixels\Client $client;
+    private static array $data;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->client = new Client(new Ruleset());
     }
@@ -50,10 +49,8 @@ final class EmojiTest extends TestCase
 
     /**
      * test Ruleset data
-     *
-     * @return void
      */
-    public function testRulesetData()
+    public function testRulesetData(): void
     {
         $shortcode_replace = $this->client->getRuleset()->getShortcodeReplace();
         $unicode_replace = $this->client->getRuleset()->getUnicodeReplace();
@@ -82,11 +79,11 @@ final class EmojiTest extends TestCase
             // Check that the shortname has a corresponding unicode entry
             $this->assertEquals($unicode, $unicode_replace[$shortname], $shortname);
 
-            $inRegEx = preg_match('/' . $this->client->unicodeRegexp . '/ui', $unicode);
+            $inRegEx = preg_match('/' . $this->client->unicodeRegexp . '/ui', (string) $unicode);
 
             $this->assertEquals(1, $inRegEx, $shortname);
 
-            $inRegEx = preg_match('/' . $this->client->ignoredRegexp . '|(' . $this->client->shortcodeRegexp . ')/Siu', $shortname);
+            $inRegEx = preg_match('/' . $this->client->ignoredRegexp . '|(' . $this->client->shortcodeRegexp . ')/Siu', (string) $shortname);
 
             $this->assertEquals(1, $inRegEx, $shortname);
         }
@@ -95,7 +92,7 @@ final class EmojiTest extends TestCase
 
         // Check that a group of three unicode characters
         //   can be matched through the unicode regex
-        for ($x = 0; $x < $tripleUnicodeCount; $x++) {
+        for ($x = 0; $x < $tripleUnicodeCount; ++$x) {
 
             $str = $unicodes[$x] . $unicodes[$x + 1] . $unicodes[$x + 2];
 
@@ -108,10 +105,8 @@ final class EmojiTest extends TestCase
 
     /**
      * test that all shortcodes return an image
-     *
-     * @return void
      */
-    public function testToImage()
+    public function testToImage(): void
     {
         $file = __DIR__ . '/../../../joypixels.json';
 
@@ -122,9 +117,9 @@ final class EmojiTest extends TestCase
         $emojiVersion = $json->version;
 
         foreach (self::$data as $shortname => $codePoints) {
-            $convert_unicode = strtolower($this->client->convert($codePoints[0]));
+            $convert_unicode = strtolower((string) $this->client->convert($codePoints[0]));
 
-            $image = '<img class="joypixels" alt="' . $convert_unicode . '" title="' . htmlspecialchars($shortname) . '" src="https://cdn.jsdelivr.net/joypixels/assets/' . $emojiVersion . '/png/unicode/32/' . $codePoints[1] . '.png"/>';
+            $image = '<img class="joypixels" alt="' . $convert_unicode . '" title="' . htmlspecialchars((string) $shortname) . '" src="https://cdn.jsdelivr.net/joypixels/assets/' . $emojiVersion . '/png/unicode/32/' . $codePoints[1] . '.png"/>';
 
             $this->assertEquals($image, $this->client->toImage($shortname));
         }
