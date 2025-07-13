@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-if (php_sapi_name() !== 'cli')
+if (PHP_SAPI !== 'cli')
 {
 	echo "This script must be run in CLI\n";
 	exit(1);
@@ -39,8 +39,8 @@ foreach (json_decode(file_get_contents($filepath), true) as $emoji)
 
 // The delimiter and modifiers should match what's used in toShort()
 $builder = s9e\RegexpBuilder\Factory\PHP::getBuilder(
-	delimiter: '/',
-	modifiers: 'ui'
+	modifiers: 'ui',
+    delimiter: '/'
 );
 // The regexp is used as part of another. Marking it as not "standalone" will cause it to
 // be wrapped in a non-capturing group so it doesn't interfere with other alternations
@@ -56,30 +56,26 @@ $new = patchFile(
 if ($new !== $revised)
 {
 	file_put_contents($clientFilepath, $new);
-	echo "Patched $clientFilepath\n";
+	echo sprintf('Patched %s%s', $clientFilepath, PHP_EOL);
 }
 else
 {
-	echo "$clientFilepath \$unicodeRegexp is already up to date\n";
+	echo $clientFilepath . ' $unicodeRegexp is already up to date
+';
 }
 
 /**
 * @param string $old         String version of Client.php
 * @param string $regexp      PCRE regexp used to match what needs to be patched
 * @param string $replacement Literal string replacement
-* @return string
 */
 function patchFile(string $old, string $regexp, string $replacement): string
 {
-	$new = preg_replace_callback(
+	return preg_replace_callback(
 		$regexp,
-		function () use ($replacement)
-		{
-			return $replacement;
-		},
+		fn(): string => $replacement,
 		$old
 	);
-	return ($new !== $old) ? $new : $old;
 }
 
 /**
